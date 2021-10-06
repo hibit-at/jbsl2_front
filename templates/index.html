@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+
+<div style="text-align:center;">
+<h3>現在、<a href="https://docs.google.com/forms/d/14dnWHcyIfWb2HYsLEcWrumvTexPNiH3TEw8CMYys-Yw/" target="blank">応募</a>受付中です！〆10/23（土）</h3>
+<p><a href='what'>JBSLとは？</a></p>
+</div>
+<hr style="color:orange">
+{% comment %} {% if news|length > 0 %}
+<p>Headlines（これは予選ではなく練習試合のものです）</p>
+{% for n in news %}
+<li>{{n.time}} {{n.text}}</li>
+{% endfor %}
+{% endif %} {% endcomment %}
+<p style="text-align:right;color:white">スコア取得日時 {{utime.time}}</p>
+{% comment "j1" %}{% endcomment %}
+{% for T in total_league %}
+<h3 style="text-align:center;color:{{T.leagueinfo.fontcolor}};margin-top:20px">
+{{T.leagueinfo.league}} リーグ
+{% if T.leagueinfo.league != 'staff' %}
+（暫定）
+{% endif %}
+<a href="leaderboard/?league={{T.leagueinfo.league}}">
+<img src="{% static 'icon.png' %}" style="height:30px;width:30px">
+</a></h3>
+<div style="background-color:{{T.leagueinfo.bgcolor}};padding:50px;border-radius:20px">
+<table>
+<thead style="color:{{T.leagueinfo.fontcolor}}">
+<tr><th>プレイヤー名</th><th>Top3PP</th><th>ひとこと</th></tr>
+</thead>
+<tbody style="color:black">
+{% for p in T.players %}
+<tr>
+<td width="200">
+{{p.name}}
+<a class="trans" href="https://scoresaber.com/u/{{p.sid}}" target="blank">
+<img src="{% static 'ScoreSaberLogo.svg' %}" style="width:15px;height15px">
+</a>
+{% if p.abstein %}（棄権）{% endif %}
+</td>
+<td width="200">{{p.pp3|floatformat:2}}</td>
+<td>{{p.profile}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endfor %}
+
+<p></p>
+<h3>リーグ分けについて</h3>
+<div style="margin:20px">
+<p>JBSLでは、参加者同士の実力にあまりにも差が付きすぎることを防ぐために、リーグを3つに分けて、上位からそれぞれJ1、J2、J3と称しています。</p>
+<p>基本的には pp に基づいてリーグ分けを行いますが、より正確な実力を反映するために、各ユーザーの譜面 pp の内、高いもの3つを合計した値（Top3PP）を用いています。</p>
+<p>応募期間中、応募者が増える度に、または応募者の Top3PP が変動する度に、自分が所属するリーグは変更される可能性があることにご注意ください。</p>
+<p>締め切りを <u>10/23（土）23:59 とし、その時点で応募を打ち切り、その後運営から発表されたリーグ分けを最終的なもの</u>とします</p>
+<p>リーグの数やボーダーの基準等は、運営の都合上、予告なく変更される場合があります。</p>
+</div>
+<h3>応募者のライバル関係</h3>
+<div style="text-align:center"
+{% if how_many_pair > 0 %}
+<p>両想い（お互いライバル視）は <span style="font-size:30px">{{how_many_pair}}</span> 組いるようです。</p>
+{% endif %}
+{% for k in kataomowares%}
+<p>最もライバル視されている人は <span style="font-size:30px">{{k.0}}</span> さんです。（<span style="font-size:30px">{{k.1}}</span> 人からライバル視されています。）</p>
+{% endfor %}
+</div>
+{% endblock %}

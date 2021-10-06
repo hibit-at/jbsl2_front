@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>スコア手動提出</h2>
+<p>登録したいスコアが載っている Score Saber の<b>譜面別</b>※のURLを指定してください。</p>
+<p>※ユーザーページではなく、譜面別のページであることに注意してください。</p>
+<p>（○良い例：https://scoresaber.com/leaderboard/311076?page=15）
+<p>（×悪い例：https://scoresaber.com/u/76561198405857645&page=8&sort=1）
+<form method = "POST" action="/register/">
+{% csrf_token %}
+{{form.as_p}}
+<button type="submit">手動提出</button>
+</form>
+{% endblock %}

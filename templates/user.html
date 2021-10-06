@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{player.name}} 
+{% if player.abstein %}
+（棄権）
+{% endif %}
+さんの個人ページです
+</h2>
+<p>Top3pp：{{player.pp3}}</p>
+<p>所属リーグ（暫定）：{{player.league}}</p>
+<p>ひとこと：{{player.profile}}</p>
+<p>ライバル：{{rival}}</p>
+<p>「ひとこと」とライバルは以下のフォームから変更できます。ライバルに自分を設定するとライバルなしになります。</p>
+<form method = "POST" action="/user/?hash={{player.hashurl}}" style="width:500px">
+{% csrf_token %}
+{{pform.as_p}}
+<button type="submit">プロフィール変更</button>
+</form>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+
+<h2 style="text-align:center;color:{{fontcolor}}">{{league}} リーグ Leaderboard</h2>
+<p style="text-align:right">
+<a href="{% url 'app:submission' %}">
+スコア手動提出
+</a>
+</p>
+<p style="text-align:right">スコア取得日時 {{utime.time}}</p>
+<div style="background-color:{{bgcolor}};padding:50px;border-radius:20px">
+<table>
+<tr style="color:{{fontcolor}}">
+<th>順位</th>
+<th>プレイヤー名</th>
+<th>総合順位点</th>
+<th>総合精度</th>
+</tr>
+<tbody style="color:black">
+{% for s in scored_rank %}
+<tr>
+{% if s.abstein %}
+<td width="50px">--</td>
+{% else %}
+<td width="50px">#{{s.rank}}</td>
+{% endif %}
+<td width="150px">
+{{s.name}}
+{% if s.abstein %}（棄権）{% endif %}
+</td>
+<td width="100px">{{s.pos}}</td>
+<td width="100px">{{s.acc|floatformat:2}}</td>
+</tr>
+<p>{{t.name}}</p>
+{% endfor %}
+</tbody>
+</table>
+</div>
+<hr>
+<h2 style="text-align:center">譜面別リーグ内順位</h2>
+{% for LB in LBs%}
+<p><span style="font-size:22px;font-weight:bold">{{LB.map.title}} <span style="color:{{LB.color}}">{{LB.map.label}}</span></span> by {{LB.map.author}}
+<a href="https://beatsaver.com/maps/{{LB.map.bsr}}" target="blank">
+<img src="{% static 'beatsaver.png' %}" style="height:20px;width:20px">
+</a>
+<a href="https://scoresaber.com/leaderboard/{{LB.map.diff}}" target="blank">
+<img src="{% static 'ScoreSaberLogo.svg' %}" style="height:20px;width:20px">
+</a>
+<a href="/mapboard/?map={{LB.map.diff}}">
+<img src="{% static 'icon.png' %}" style="height:20px;width:20px">
+</a>
+</p>
+<div style="background-color:{{bgcolor}};padding:50px;border-radius:20px">
+<table>
+<tr style="color:{{fontcolor}}">
+<th>順位</th>
+<th>プレイヤー名</th>
+<th>順位点</th>
+<th>精度</th>
+</tr>
+<tbody style="color:black">
+{% for p in LB.players %}
+<tr>
+<td width="50px">
+{% if p.abstein %}
+--
+{% else %}
+#{{p.rank}}
+{% endif %}
+</td>
+<td width="150px">{{p.name}}
+{% if p.abstein %}（棄権）{% endif %}
+</td>
+<td width="100px">{{p.pos}}</td>
+<td width="100px">{{p.acc|floatformat:2}}%</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endfor %}
+{% endblock %}

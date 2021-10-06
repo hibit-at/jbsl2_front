@@ -1,0 +1,23 @@
+a {
+ 
+color:orange;
+text-decoration: none;
+ 
+}
+
+a:hover {
+ 
+color:black;
+background-color: orange;
+text-decoration: none;
+padding:5px;
+border-radius: 10px;
+ 
+}
+
+.trans:hover{
+    text-decoration: none;
+    padding:0px;
+    border-radius: 0px;
+    background-color: transparent;
+}

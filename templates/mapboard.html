@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<p style="text-align:right">スコア取得日時 {{utime.time}}</p>
+<p><span style="font-size:22px;font-weight:bold">{{map.title}} <span style="color:{{color}}">{{map.label}}</span></span> by {{map.author}}
+<a href="https://beatsaver.com/maps/{{map.bsr}}" target="blank">
+<img src={% static 'beatsaver.png' %} style="width:20px;height:20px">
+</a>
+<a href="https://scoresaber.com/leaderboard/{{map.diff}}" target="blank">
+<img src="{% static 'ScoreSaberLogo.svg' %}" style="width:20px;height:20px">
+</a>
+</p>
+<table>
+<tr>
+<th>順位</th>
+<th>プレイヤー名</th>
+<th>リーグ</th>
+<th>精度</th>
+{% for p in players %}
+<tr>
+<td width="50px">#{{p.rank}}</td>
+<td width="150px">{{p.name}}</td>
+<td width="100px">{{p.league}}</td>
+<td width="100px">{{p.acc|floatformat:2}}%</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<p></p>
+{% endblock %}

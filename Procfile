@@ -1,0 +1,1 @@
+web: gunicorn jbsl2.wsgi --log-file -

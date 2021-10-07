@@ -34,7 +34,8 @@
 {% for p in T.players %}
 <tr>
 <td width="200">
-{{p.name}}
+<img src="{% static 'users/' %}{{p.sid}}.jpg" style="height:30px;width:30px;border-radius:15px;">
+{{p.name | truncatechars:10}}
 <a class="trans" href="https://scoresaber.com/u/{{p.sid}}" target="blank">
 <img src="{% static 'ScoreSaberLogo.svg' %}" style="width:15px;height15px">
 </a>

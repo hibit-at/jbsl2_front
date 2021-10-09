@@ -29,6 +29,10 @@ class Map(models.Model):
     label = models.CharField(default='',max_length=20)
     notes = models.IntegerField(default=0)
     bsr = models.CharField(default='',max_length=10)
+    hash = models.CharField(default='',max_length=100)
+
+    def __str__(self):
+        return f'({self.league}){self.title[:10]}'
 
 class Score(models.Model):
     sid = models.CharField(max_length=20)
@@ -38,7 +42,7 @@ class Score(models.Model):
 
     def __str__(self):
         name = Player.objects.get(sid = self.sid).name
-        title = Map.objects.get(diff = self.diff).title   
+        title = Map.objects.filter(diff = self.diff)[0].title   
         return name + ' > ' + title
 
 class News(models.Model):

@@ -230,6 +230,7 @@ def leaderboard(request):
         scored_LB = []
         rank = 1
         for mL in mapLB:
+            print(mL)
             name, acc = mL
             pos = base + slope(rank)
             if acc == 0:
@@ -243,6 +244,7 @@ def leaderboard(request):
                 'acc': acc,
                 'pos': pos,
                 'abstein': player.abstein,
+                'sid' : player.sid,
             }
             scored_LB.append(append_data)
             if not player.abstein:
@@ -277,6 +279,7 @@ def leaderboard(request):
             'pos': t[1]['pos'],
             'acc': t[1]['acc'],
             'abstein': player.abstein,
+            'sid' : player.sid,
         }
         scored_rank.append(append_data)
         if not player.abstein:
@@ -310,7 +313,7 @@ def mapboard(request):
     diff = request.GET.get('map')
     if not Map.objects.filter(diff=diff).exists():
         return render(request, 'error.html')
-    map = Map.objects.get(diff=diff)
+    map = Map.objects.filter(diff=diff)[0]
     scores = Score.objects.filter(diff=diff).order_by('-acc')
     players = []
     rank = 1

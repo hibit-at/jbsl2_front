@@ -2,6 +2,8 @@
 {% block content %}
 {% load static %}
 <p style="text-align:right">スコア取得日時 {{utime.time}}</p>
+<img src="https://scoresaber.com/imports/images/songs/{{map.hash}}.png" style="height:256px;width:256px;border-radius:30px">
+
 <p><span style="font-size:22px;font-weight:bold">{{map.title}} <span style="color:{{color}}">{{map.label}}</span></span> by {{map.author}}
 <a href="https://beatsaver.com/maps/{{map.bsr}}" target="blank">
 <img src={% static 'beatsaver.png' %} style="width:20px;height:20px">

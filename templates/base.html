@@ -26,18 +26,5 @@ TOP PAGE
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(function() {
-    $('.toggle-trigger').on('click', function() {
-        const target = $(this).attr('href');
-        if ($(target).hasClass('toggle-open')) {
-            $(target).removeClass('toggle-open');
-            $(this).text('すべて表示');
-        } else {
-            $(target).addClass('toggle-open');
-            $(this).text('上位5名を表示');
-        }
-    });
-});
-</script>
+<script src="{% static 'jbsl2.js' %}"></script>
 </body>

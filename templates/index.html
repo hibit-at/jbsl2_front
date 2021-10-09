@@ -25,7 +25,7 @@
 <a href="leaderboard/?league={{T.leagueinfo.league}}">
 <img src="{% static 'icon.png' %}" style="height:30px;width:30px">
 </a></h3>
-<div id="{{T.leagueinfo.league}}" class="toggle-target" style="background-color:{{T.leagueinfo.bgcolor}};padding:50px;border-radius:20px">
+<div style="background-color:{{T.leagueinfo.bgcolor}};padding:50px;border-radius:20px">
 <table class="table table-striped table-borderless">
 <thead style="color:{{T.leagueinfo.fontcolor}}">
 <tr><th>プレイヤー名</th><th>Top3PP</th><th>ひとこと</th></tr>
@@ -47,9 +47,6 @@
 {% endfor %}
 </tbody>
 </table>
-{% if T.players|length > 5 %}
-<a class="toggle-trigger" href="#{{T.leagueinfo.league}}">すべて表示</a>
-{% endif %}
 </div>
 {% endfor %}
 

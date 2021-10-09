@@ -22,14 +22,32 @@ border-radius: 10px;
     background-color: transparent;
 }
 
-.toggle-trigger {
+.top5-trigger {
     color: black;
 }
-
-.toggle-target tr:nth-child(n+6) {
+.top5-target tr:nth-child(n+6) {
     display: none;
 }
+.top5-target.top5-open tr:nth-child(n+6) {
+    display: table-row;
+}
 
-.toggle-target.toggle-open tr:nth-child(n+6) {
+.border7-trigger {
+    color: black;
+}
+.border7-target tr:nth-child(n+8) {
+    display: none;
+}
+.border7-target.border7-open tr:nth-child(n+8) {
+    display: table-row;
+}
+
+.border8-trigger {
+    color: black;
+}
+.border8-target tr:nth-child(n+9) {
+    display: none;
+}
+.border8-target.border8-open tr:nth-child(n+9) {
     display: table-row;
 }

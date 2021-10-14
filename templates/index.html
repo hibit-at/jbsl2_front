@@ -2,13 +2,22 @@
 {% block content %}
 
 {% load static %}
-
 <div style="text-align:center;">
 <h3>現在、<a href="https://docs.google.com/forms/d/14dnWHcyIfWb2HYsLEcWrumvTexPNiH3TEw8CMYys-Yw/" target="blank">応募</a>受付中です！〆10/23（土）</h3>
 <p><a href='what'>JBSLとは？</a></p>
 <li><a href="/leaderboard/?league=J1">J1練習試合</a>　開催中！</li>
 <li><a href="/leaderboard/?league=J2">J2練習試合</a>　開催中！</li>
 <li><a href="/leaderboard/?league=J3">J3練習試合</a>　開催中！</li>
+</div>
+<div style="position:fixed;width:auto;height:auto;right:30px;bottom:30px;background-color:rgba(255,255,255,0.7);border-radius:10px;text-align:center;padding:10px">
+<p><a class="trans" href="#top" style="color:black">ページ先頭</a></p>
+{% for T in total_league %}
+<p>
+<a class="trans" href="#{{T.leagueinfo.league}}" style="color:black">
+{{T.leagueinfo.league}}
+</a>
+</p>
+{% endfor %}
 </div>
 <hr style="color:orange">
 {% comment %} {% if news|length > 0 %}
@@ -19,14 +28,15 @@
 {% endif %} {% endcomment %}
 <p style="text-align:right;color:white">スコア取得日時 {{utime.time}}</p>
 {% for T in total_league %}
-<h3 style="text-align:center;color:{{T.leagueinfo.fontcolor}};margin-top:20px">
-{{T.leagueinfo.league}} リーグ
+<h3 style="text-align:center;color:{{T.leagueinfo.fontcolor}};margin-top:20px" id="{{T.leagueinfo.league}}">
+{{T.leagueinfo.league}}
 {% if T.leagueinfo.league != 'staff' %}
-（暫定）
-{% endif %}
+リーグ（暫定）
 <a href="leaderboard/?league={{T.leagueinfo.league}}">
 <img src="{% static 'icon.png' %}" style="height:30px;width:30px">
-</a></h3>
+</a>
+{% endif %}
+</h3>
 <div style="background-color:{{T.leagueinfo.bgcolor}};padding:50px;border-radius:20px">
 <table class="table table-striped table-borderless">
 <thead style="color:{{T.leagueinfo.fontcolor}}">

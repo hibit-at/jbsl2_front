@@ -23,11 +23,11 @@ def color(label):
         return 'magenta'
     if label == 'Expert':
         return 'red'
-    if label == 'hard':
+    if label == 'Hard':
         return 'orange'
-    if label == 'normal':
+    if label == 'Normal':
         return 'green'
-    if label == 'easy':
+    if label == 'Easy':
         return 'cyan'
     return 'black'
 
@@ -118,6 +118,14 @@ def index(request):
         league = L.league
         L_players = Player.objects.filter(
             league=league).order_by('pp3').reverse()
+        if league == 'staff':
+            L_players = Player.objects.filter(league=league)
+            print('staff roll')
+            player_staffs = ['BigSlick','おかず','oRuGaM','おーばか']
+            for ps in player_staffs:
+                psobject = Player.objects.filter(name = ps)
+                L_players = L_players.union(psobject)
+            L_players = L_players.order_by('-pp3')
         append_data = {
             'leagueinfo': L,
             'players': L_players
@@ -187,14 +195,7 @@ def user(request):
     }
     pform = ProfileForm(initial=init_form)
 
-    class AbsteinForm(forms.Form):
-        abtein = forms.BooleanField(
-            label='棄権', widget=forms.BooleanField
-        )
-
-    aform = AbsteinForm()
-
-    params = {'player': player, 'pform': pform, 'rival': rival, 'aform' : aform}
+    params = {'player': player, 'pform': pform, 'rival': rival}
     return render(request, 'user.html', params)
 
 
@@ -275,11 +276,9 @@ def leaderboard(request):
         player = Player.objects.get(name=name)
         append_data = {
             'rank': rank,
-            'name': t[0],
+            'player' : player,
             'pos': t[1]['pos'],
             'acc': t[1]['acc'],
-            'abstein': player.abstein,
-            'sid' : player.sid,
         }
         scored_rank.append(append_data)
         if not player.abstein:
@@ -287,8 +286,6 @@ def leaderboard(request):
 
     # リーグごとのカラー
     Linfo = LeagueInfo.objects.get(league=league)
-    fontcolor = Linfo.fontcolor
-    bgcolor = Linfo.bgcolor
 
     # 取得日時
     utimes = Updatetime.objects.all()
@@ -301,8 +298,7 @@ def leaderboard(request):
         'scored_rank': scored_rank,
         'league': league,
         'LBs': LBs,
-        'fontcolor': fontcolor,
-        'bgcolor': bgcolor,
+        'Linfo': Linfo,
         'utime': utime,
     }
 
@@ -380,7 +376,7 @@ def register(request):
         print('not')
         params = {'message': ['このマップIDは本システムに登録されていません。']}
         return render(request, 'register.html', params)
-    song = Map.objects.get(diff=diff)
+    song = Map.objects.filter(diff=diff)[0]
     ptn = r'<a href="/u/(.*?)">'
     sids = re.findall(ptn, txt)
     ptn = r'<td class="score">(.*?)</td>'

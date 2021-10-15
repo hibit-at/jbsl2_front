@@ -23,32 +23,34 @@
 </p>
 <p style="text-align:right">スコア取得日時 {{utime.time}}</p>
 <div id="{{league}}" class="border8-target" style="background-color:{{Linfo.bgcolor}};padding:50px;border-radius:20px">
-<table class="table table-striped table-borderless" >
+<table class="table table-striped table-borderless">
+<thead>
 <tr style="color:{{Linfo.fontcolor}}">
 <th>順位</th>
 <th>プレイヤー名</th>
-<th>総合順位点</th>
-<th>総合精度</th>
+<th>総合<br>順位点</th>
+<th>総合<br>精度</th>
 <th>ひとこと</th>
 </tr>
+</thead>
 <tbody style="color:black">
 {% for s in scored_rank %}
 <tr>
-<td width="20px">
+<td width="50px">
 {% if s.abstein or s.acc == 0%}
 --
 {% else %}
 #{{s.rank}}
 {% endif %}
 </td>
-<td width="50px">
+<td width="150px">
 <img src="{% static 'users/' %}{{s.player.sid}}.jpg" style="height:30px;width:30px;border-radius:15px;">
 {{s.player.name}}
 {% if s.player.abstein %}（棄権）{% endif %}
 </td>
-<td width="50px">{{s.pos}}</td>
-<td width="100px">{{s.acc|floatformat:2}}</td>
-<td width="100px">{{s.player.profile}}</td>
+<td width="70px">{{s.pos}}</td>
+<td width="70px">{{s.acc|floatformat:2}}</td>
+<td>{{s.player.profile}}</td>
 </tr>
 <p>{{t.name}}</p>
 {% endfor %}

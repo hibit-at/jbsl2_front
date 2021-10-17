@@ -52,32 +52,41 @@
 {% if s.player.abstein %}（棄権）{% endif %}
 </td>
 <td width="70px">
-<span class="c-tooltip" data-tooltip=
-"
+<span
+{% if s.count_maps %}
+data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="
 {% for c in s.count_maps %}
-{{c.map.title | truncatechars:10}}({{c.pos}}), 
+{{c.map.title | truncatechars:20}} ({{c.pos}})<br>
 {% endfor %}
-">
+"
+{% endif %}
+>
 {{s.pos}}
 </span>
 </td>
 <td width="70px">
-<span class="c-tooltip" data-tooltip=
-"
+<span
+{% if s.count_maps %}
+data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="
 {% for c in s.count_maps %}
-{{c.map.title | truncatechars:20}}, 
+{{c.map.title | truncatechars:25}}<br>
 {% endfor %}
-">
+"
+{% endif %}
+>
 {{s.valid}}
 </span>
 </td>
 <td width="70px">
-<span class="c-tooltip" data-tooltip=
-"
+<span
+{% if s.count_maps %}
+data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="
 {% for c in s.count_maps %}
-{{c.map.title | truncatechars:10}}({{c.acc}}), 
+{{c.map.title | truncatechars:15}} ({{c.acc}})<br>
 {% endfor %}
-">
+"
+{% endif %}
+>
 {{s.acc|floatformat:2}}
 </span>
 </td>

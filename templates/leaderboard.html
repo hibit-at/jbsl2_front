@@ -16,12 +16,14 @@
 </div>
 
 <h2 style="text-align:center;color:{{Linfo.fontcolor}}">{{league}} リーグ Leaderboard</h2>
-<p style="text-align:right">
+<div style="text-align:right">
+<p>
 <a href="{% url 'app:submission' %}">
 スコア手動提出
 </a>
 </p>
-<p style="text-align:right">スコア取得日時 {{utime.time}}</p>
+<p>スコア取得日時 {{utime.time}}</p>
+</div>
 <div id="{{league}}" class="border8-target" style="background-color:{{Linfo.bgcolor}};padding:50px;border-radius:20px">
 <table class="table table-striped table-borderless">
 <thead>
@@ -50,10 +52,35 @@
 {% if s.player.abstein %}（棄権）{% endif %}
 </td>
 <td width="70px">
+<span class="c-tooltip" data-tooltip=
+"
+{% for c in s.count_maps %}
+{{c.map.title | truncatechars:10}}({{c.pos}}), 
+{% endfor %}
+">
 {{s.pos}}
+</span>
 </td>
-<td width="70px">{{s.valid}}</td>
-<td width="70px">{{s.acc|floatformat:2}}</td>
+<td width="70px">
+<span class="c-tooltip" data-tooltip=
+"
+{% for c in s.count_maps %}
+{{c.map.title | truncatechars:20}}, 
+{% endfor %}
+">
+{{s.valid}}
+</span>
+</td>
+<td width="70px">
+<span class="c-tooltip" data-tooltip=
+"
+{% for c in s.count_maps %}
+{{c.map.title | truncatechars:10}}({{c.acc}}), 
+{% endfor %}
+">
+{{s.acc|floatformat:2}}
+</span>
+</td>
 <td>{{s.player.profile}}</td>
 </tr>
 <p>{{t.name}}</p>

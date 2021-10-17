@@ -277,9 +277,9 @@ def leaderboard(request):
         score_list = t[1]
         print(score_list)
         valid_count = sum([s[1] > 0 for s in score_list][:count_range])
-        count_pos = sum([s[0] for s in score_list][:count_range])
-        count_acc = sum([s[1] for s in score_list][:count_range])
-        count_list = score_list[:count_range]
+        count_pos = sum([s[0] for s in score_list][:valid_count])
+        count_acc = sum([s[1] for s in score_list][:valid_count])
+        count_list = score_list[:valid_count]
         count_json = []
         for c in count_list:
             append_data = {}
@@ -306,7 +306,7 @@ def leaderboard(request):
             'pos': c[1],
             'acc': c[2],
             'valid' : c[3],
-            'count_json' : c[4],
+            'count_maps' : c[4],
         }
         scored_rank.append(append_data)
         if not player.abstein:

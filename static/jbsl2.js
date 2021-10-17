@@ -1,4 +1,5 @@
 $(function() {
+    // define event handler
     $('.top5-trigger').on('click', function() {
         const target = $(this).attr('href');
         if ($(target).hasClass('top5-open')) {
@@ -30,5 +31,12 @@ $(function() {
             $(target).addClass('border8-open');
             $(this).text('予選通過ラインのみ表示');
         }
+    });
+
+    // initialize
+    // https://getbootstrap.com/docs/5.1/components/tooltips/#example-enable-tooltips-everywhere
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });

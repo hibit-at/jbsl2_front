@@ -45,15 +45,25 @@
 <tbody style="color:black">
 {% for p in T.players %}
 <tr>
-<td width="250">
+<td width="250px">
 <img src="{% static 'users/' %}{{p.sid}}.jpg" style="height:30px;width:30px;border-radius:15px;">
 {{p.name | truncatechars:10}}
 <a class="trans" href="https://scoresaber.com/u/{{p.sid}}" target="blank">
 <img src="{% static 'ScoreSaberLogo.svg' %}" style="width:15px;height15px">
 </a>
+{% if p.twitch|length > 0 %}
+<a class="trans" href="https://twitch.tv/{{p.twitch}}" target="blank">
+<img src="{% static 'twitch.png' %}" style="width:15px;height15px">
+</a>
+{% endif %}
+{% if p.twitter|length > 0 %}
+<a class="trans" href="https://twitter.com/{{p.twitter}}" target="blank">
+<img src="{% static 'twitter.png' %}" style="width:15px;height15px">
+</a>
+{% endif %}
 {% if p.abstein %}（棄権）{% endif %}
 </td>
-<td width="100">{{p.pp3|floatformat:2}}</td>
+<td width="100px">{{p.pp3|floatformat:2}}</td>
 <td>{{p.profile}}</td>
 </tr>
 {% endfor %}

@@ -1,8 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{player.name}} 
+
+{% load static %}
+
+<h2>{{player.name}}
 {% if player.abstein %}
 （棄権）
+{% endif %}
+<a class="trans" href="https://scoresaber.com/u/{{p.sid}}" target="blank">
+<img src="{% static 'ScoreSaberLogo.svg' %}" style="width:20px;height20px">
+</a>
+{% if player.twitch|length > 0 %}
+<a class="trans" href="https://twitch.tv/{{player.twitch}}" target="blank">
+<img src="{% static 'twitch.png' %}" style="width:20px;height20px">
+</a>
+{% endif %}
+{% if player.twitter|length > 0 %}
+<a class="trans" href="https://twitter.com/{{player.twitter}}" target="blank">
+<img src="{% static 'twitter.png' %}" style="width:20px;height20px">
+</a>
 {% endif %}
 さんの個人ページです
 </h2>
@@ -11,6 +27,7 @@
 <p>ひとこと：{{player.profile}}</p>
 <p>ライバル：{{rival}}</p>
 <p>「ひとこと」とライバルは以下のフォームから変更できます。ライバルに自分を設定するとライバルなしになります。</p>
+<p>TwitchとTwitterのアカウント設定は任意ですが、<u>本戦に出場する場合Twitchアカウントは必須</u>となります。</p>
 <form method = "POST" action="/user/?hash={{player.hashurl}}" style="width:500px">
 {% csrf_token %}
 {{pform.as_p}}

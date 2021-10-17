@@ -121,9 +121,9 @@ def index(request):
         if league == 'staff':
             L_players = Player.objects.filter(league=league)
             print('staff roll')
-            player_staffs = ['BigSlick','おかず','oRuGaM','おーばか']
+            player_staffs = ['BigSlick', 'おかず', 'oRuGaM', 'おーばか']
             for ps in player_staffs:
-                psobject = Player.objects.filter(name = ps)
+                psobject = Player.objects.filter(name=ps)
                 L_players = L_players.union(psobject)
             L_players = L_players.order_by('-pp3')
         append_data = {
@@ -142,7 +142,7 @@ def index(request):
               'how_many_pair': how_many_pair,
               'kataomowares': kataomowares,
               'utime': utime,
-              'news' : news}
+              'news': news}
     return render(request, 'index.html', params)
 
 
@@ -157,8 +157,10 @@ def user(request):
     post = request.POST
     if len(post) > 0:
         # プロフィールの変更
-        print(post)
         player.profile = post['profile']
+        # TwitterとTwitch
+        player.twitter = post['twitter'].replace('@','')
+        player.twitch = post['twitch']
         # ライバルの変更
         if 'rival' in post:
             player.rival_sid = request.POST['rival']
@@ -185,13 +187,18 @@ def user(request):
     class ProfileForm(forms.Form):
         profile = forms.CharField(
             label='ひとこと', widget=forms.Textarea, max_length=50, required=False)
+        twitch = forms.CharField(
+            label='TwitchID', max_length=50, required=False)
+        twitter = forms.CharField(
+            label='TwitterID', max_length=50, required=False)
         rival = forms.ChoiceField(
             label='ライバル', widget=forms.RadioSelect, choices=choice, required=False)
-
 
     init_form = {
         'profile': player.profile,
         'rival': player.rival_sid,
+        'twitter' : player.twitter,
+        'twitch' : player.twitch,
     }
     pform = ProfileForm(initial=init_form)
 
@@ -231,7 +238,7 @@ def leaderboard(request):
         scored_LB = []
         rank = 1
         for mL in mapLB:
-            print(mL)
+            # print(mL)
             name, acc = mL
             pos = base + slope(rank)
             if acc == 0:
@@ -241,11 +248,9 @@ def leaderboard(request):
                 pos = 0
             append_data = {
                 'rank': rank,
-                'name': name,
+                'player': player,
                 'acc': acc,
                 'pos': pos,
-                'abstein': player.abstein,
-                'sid' : player.sid,
             }
             scored_LB.append(append_data)
             if not player.abstein:
@@ -258,27 +263,50 @@ def leaderboard(request):
         LBs.append(append_data)
     # 順位点をもとにランキングを決定
 
-    def pos_acc():
-        return {'pos': 0, 'acc': 0}
-
-    total_rank = defaultdict(pos_acc)
+    total_rank = defaultdict(list)
     for LB in LBs:
         for p in LB['players']:
-            # print(p)
-            total_rank[p['name']]['pos'] += p['pos']
-            total_rank[p['name']]['acc'] += p['acc']
-    total_rank = sorted(total_rank.items(),
-                        key=lambda x: (-x[1]['pos'], -x[1]['acc']))
+            pos_acc_map = (p['pos'],p['acc'],LB['map'])
+            total_rank[p['player']].append(pos_acc_map)
+    for t in total_rank:
+        total_rank[t] = sorted(total_rank[t], key=lambda x : (-x[0],-x[1]))
+    counted_rank = []
+    count_range = 4
+    for t in total_rank.items():
+        player = t[0]
+        score_list = t[1]
+        print(score_list)
+        valid_count = sum([s[1] > 0 for s in score_list][:count_range])
+        count_pos = sum([s[0] for s in score_list][:count_range])
+        count_acc = sum([s[1] for s in score_list][:count_range])
+        count_list = score_list[:count_range]
+        count_json = []
+        for c in count_list:
+            append_data = {}
+            append_data['pos'] = c[0]
+            append_data['acc'] = c[1]
+            append_data['map'] = c[2]
+            count_json.append(append_data)
+        append_data = (
+            player,
+            count_pos,
+            count_acc,
+            valid_count,
+            count_json,
+        )
+        counted_rank.append(append_data)
+    counted_rank = sorted(counted_rank,key=lambda x: (-x[1],-x[2]))
     scored_rank = []
     rank = 1
-    for t in total_rank:
-        name = t[0]
-        player = Player.objects.get(name=name)
+    for c in counted_rank:
+        player = c[0]
         append_data = {
             'rank': rank,
-            'player' : player,
-            'pos': t[1]['pos'],
-            'acc': t[1]['acc'],
+            'player': player,
+            'pos': c[1],
+            'acc': c[2],
+            'valid' : c[3],
+            'count_json' : c[4],
         }
         scored_rank.append(append_data)
         if not player.abstein:
